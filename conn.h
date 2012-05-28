@@ -14,12 +14,11 @@ struct conns_s {
     conn_info_t        *conn_info;
     int                count;
     int                total;
-    int                deleted_conns[DELETED_CONN_HOLD_COUNT];
+    int                deleted_conns_idx[DELETED_CONN_HOLD_COUNT];
 };
 
 conns_t make_conns();
-coid conn_add(conns_t conns, int fd, int slave_no);
-void conn_delete(conns_t conns, int fd);
-void conns_extend(conns_t conns, int size);
-void conns_extend(conns_t conns, int size);
-void conns_cut(conns_t conns);
+void conn_add(conns_t *conns, int fd, int slave_no);
+void conn_delete(conns_t *conns, int fd);
+void conns_extend(conns_t *conns, int size);
+void conns_cut(conns_t *conns);

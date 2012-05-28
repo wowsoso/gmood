@@ -4,7 +4,7 @@
 
 conns_t make_conns()
 {
-    conns_t conns = {NULL, 0, 0};
+    conns_t conns = {NULL, 0, 0, {-1}};
     return conns;
 }
 
@@ -24,7 +24,7 @@ void conns_extend(conns_t *conns, int count)
     conns->total += count;
 }
 
-void conns_cut(conns_t conns)
+void conns_cut(conns_t *conns)
 {
     
 }
@@ -32,11 +32,10 @@ void conns_cut(conns_t conns)
 void conn_add(conns_t *conns, int fd, int slave_id)
 {
     
-    if(conns->count < conns.total) {
-        conns->conn_info[conns.count].fd = fd;
-        conns->conn_info[conns.count].slave_id = slave_id;
+    if(conns->count < conns->total) {
+        conns->conn_info[conns->count].fd = fd;
+        conns->conn_info[conns->count].slave_id = slave_id;
         conns->count++;
-        return NULL;
     }
     
     else if(conns->total == 0) {
@@ -45,11 +44,11 @@ void conn_add(conns_t *conns, int fd, int slave_id)
         conns->conn_info[0].slave_id = slave_id;
         conns->count = 1;
         conns->total = INIT_CONN_COUNT;
-        return NULL;
     }
     
     else {
-        conns = conns_extend(conns, EXTEND_CONN_COUNT);
-        return conn_add(conns, fd, slave_id);
+        conns_extend(conns, EXTEND_CONN_COUNT);
+        conn_add(conns, fd, slave_id);
     }
 }
+
