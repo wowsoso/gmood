@@ -22,10 +22,23 @@ static void test_conn_add() {
 }
 
 static void test_conn_extend() {
-    conns_t conns1 = make_conns();
-    conns_extend(&conns1, 2);
+    conns_t conns = make_conns();
+    conns_extend(&conns, 2);
     
-    assert(conns1.total == 2);
+    assert(conns.total == 2);
+}
+
+static void test_conn_del() {
+    conns_t conns = make_conns();
+    conn_add(&conns, 1, 101);
+    conn_add(&conns, 2, 102);
+    conn_add(&conns, 3, 103);
+    conn_del(&conns, 1);
+    conn_del(&conns, 3);
+
+    assert(conns.total == 1);
+    assert(conns.deleted_conns_idx[0] = 1);
+    assert(conns.deleted_conns_idx[1] = 3);
 }
 
 
