@@ -18,6 +18,8 @@ struct conns_s {
 };
 
 conns_t make_conns();
-conns_t conn_add(conns_t conns, int fd, int slave_no);
-conns_t conn_delete(conns_t conns, int fd);
-conns_t conns_extend(conns_t conns, int size);
+coid conn_add(conns_t conns, int fd, int slave_no);
+void conn_delete(conns_t conns, int fd);
+void conns_extend(conns_t conns, int size);
+void conns_extend(conns_t conns, int size);
+void conns_cut(conns_t conns);

@@ -8,7 +8,7 @@ conns_t make_conns()
     return conns;
 }
 
-conns_t conns_extend(conns_t conns, int count)
+void conns_extend(conns_t *conns, int count)
 {
     int conn_info_t_size = sizeof(conn_info_t);
 
@@ -22,17 +22,21 @@ conns_t conns_extend(conns_t conns, int count)
     }
 
     conns.total += count;
-    return conns;
 }
 
-conns_t conn_add(conns_t conns, int fd, int slave_id)
+void conns_cut(conns_t conns)
+{
+    
+}
+
+void conn_add(conns_t *conns, int fd, int slave_id)
 {
     
     if(conns.count < conns.total) {
         conns.conn_info[conns.count].fd = fd;
         conns.conn_info[conns.count].slave_id = slave_id;
         conns.count++;
-        return conns;
+        return NULL;
     }
     
     else if(conns.total == 0) {
@@ -41,7 +45,7 @@ conns_t conn_add(conns_t conns, int fd, int slave_id)
         conns.conn_info[0].slave_id = slave_id;
         conns.count = 1;
         conns.total = INIT_CONN_COUNT;
-        return conns;
+        return NULL;
     }
     
     else {
@@ -49,4 +53,3 @@ conns_t conn_add(conns_t conns, int fd, int slave_id)
         return conn_add(conns, fd, slave_id);
     }
 }
-
