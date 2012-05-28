@@ -15,10 +15,14 @@ struct conns_s {
     int                count;
     int                total;
     int                deleted_conns_idx[DELETED_CONN_HOLD_COUNT];
+    int                deleted_conns_count;
 };
 
 conns_t make_conns();
-void conn_add(conns_t *conns, int fd, int slave_no);
+void conn_add(conns_t *conns, int fd, int slave_id);
+void conn_del(conns_t *conns, int fd);
 void conn_delete(conns_t *conns, int fd);
 void conns_extend(conns_t *conns, int size);
 void conns_cut(conns_t *conns);
+
+

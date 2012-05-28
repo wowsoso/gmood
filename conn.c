@@ -2,9 +2,13 @@
 #include <stdlib.h>
 #include "conn.h"
 
+/*
+  help function
+*/
+
 conns_t make_conns()
 {
-    conns_t conns = {NULL, 0, 0, {-1}};
+    conns_t conns = {NULL, 0, 0, {-1}, 0};
     return conns;
 }
 
@@ -26,7 +30,13 @@ void conns_extend(conns_t *conns, int count)
 
 void conns_cut(conns_t *conns)
 {
-    
+    int i;
+
+    for(i = 0; i < conns->deleted_conns_count; i++) {
+        conns->deleted_conns_idx[i] = -1;
+    }
+
+    conns->deleted_conns_count = 0;
 }
 
 void conn_add(conns_t *conns, int fd, int slave_id)
@@ -52,3 +62,22 @@ void conn_add(conns_t *conns, int fd, int slave_id)
     }
 }
 
+void conn_del(conns_t *conns, int fd)
+{
+    int i;
+
+    if(conns->deleted_conns_count == DELETED_CONN_HOLD_COUNT)
+        conns_cut(conns);
+
+    for(i = 0; i < conns->total; i++) {
+        if(conns->conn_info[i].fd == fd) {
+            conns->deleted_conns_idx[conns->deleted_conns_count] = fd;
+            conns->count--;
+            break;
+        }
+    }
+
+    if(conns->deleted_conns_count == DELETED_CONN_HOLD_COUNT)
+        conns_cut(conns);
+
+}
