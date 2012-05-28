@@ -14,6 +14,7 @@ conns_t make_conns()
 
 void conns_extend(conns_t *conns, int count)
 {
+    conns_cut(conns);
     int conn_info_t_size = sizeof(conn_info_t);
 
     void *p = realloc(
